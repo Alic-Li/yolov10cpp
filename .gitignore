@@ -218,3 +218,5 @@ dkms.conf
 *.pt
 
 *.DS_Store
+
+./doclayout_yolo_docstructbench_imgsz1024.onnx
