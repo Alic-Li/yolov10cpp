@@ -1,1 +1,0 @@
-/usr/bin/g++-15 -Wl,--disable-new-dtags -Wl,--dependency-file=CMakeFiles/yolov10_cpp.dir/link.d CMakeFiles/yolov10_cpp.dir/src/main.cpp.o -o yolov10_cpp  -Wl,-rpath,"\$ORIGIN:\$ORIGIN/lib" libyolov10_cpp-lib.a /usr/lib/libopencv_imgcodecs.so.4.13.0 /usr/lib/libopencv_imgproc.so.4.13.0 /usr/lib/libopencv_core.so.4.13.0 /usr/lib/libonnxruntime.so

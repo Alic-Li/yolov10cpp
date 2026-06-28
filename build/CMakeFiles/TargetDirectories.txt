@@ -1,5 +1,0 @@
-/home/alic-li/yolov10cpp/build/CMakeFiles/yolov10_cpp-lib.dir
-/home/alic-li/yolov10cpp/build/CMakeFiles/yolov10_cpp.dir
-/home/alic-li/yolov10cpp/build/CMakeFiles/bundle_yolov10_cpp.dir
-/home/alic-li/yolov10cpp/build/CMakeFiles/edit_cache.dir
-/home/alic-li/yolov10cpp/build/CMakeFiles/rebuild_cache.dir

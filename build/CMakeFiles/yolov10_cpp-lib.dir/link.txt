@@ -1,2 +1,0 @@
-/usr/bin/ar qc libyolov10_cpp-lib.a "CMakeFiles/yolov10_cpp-lib.dir/src/ia/inference.cpp.o"
-/usr/bin/ranlib libyolov10_cpp-lib.a
