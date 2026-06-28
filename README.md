@@ -5,10 +5,10 @@ This project runs DocLayout-YOLO ONNX layout detection with C++17, OpenCV, and O
 The executable only supports image inference:
 
 ```bash
-./yolov10_cpp <model_path> <image_path>
+./yolov10_cpp <model_path> <image_path> [--output_type image|json]
 ```
 
-The result is saved as `result.jpg` in the current working directory.
+The default `image` output saves `result.jpg` in the current working directory. The `json` output writes detections to stdout without rendering an image.
 
 ## Dependencies
 
@@ -19,9 +19,7 @@ The result is saved as `result.jpg` in the current working directory.
 
 The tested model is:
 
-```text
-doclayout_yolo_docstructbench_imgsz1024.onnx
-```
+https://modelscope.cn/models/AlicLi/rwkv_lightning_cuda/resolve/master/doclayout_yolo_onnx/doclayout_yolo_docstructbench_imgsz1024.onnx
 
 ## Linux
 
@@ -46,6 +44,18 @@ Run:
 
 ```bash
 ./build/yolov10_cpp ./doclayout_yolo_docstructbench_imgsz1024.onnx ./test.png
+```
+
+Run with JSON output:
+
+```bash
+./build/yolov10_cpp ./doclayout_yolo_docstructbench_imgsz1024.onnx ./test.png --output_type json
+```
+
+By default, CPU inference uses up to 8 threads. Tune this per machine with:
+
+```bash
+YOLOV10_CPP_NUM_THREADS=4 ./build/yolov10_cpp ./doclayout_yolo_docstructbench_imgsz1024.onnx ./test.png
 ```
 
 Build a portable runtime bundle:

@@ -1,7 +1,35 @@
 #include "inference.h"
 #include <algorithm>
+#include <cstdlib>
 #include <iostream>
 #include <cmath> // For exp function
+#include <limits>
+#include <thread>
+
+namespace
+{
+int getConfiguredThreadCount()
+{
+    const char *thread_env = std::getenv("YOLOV10_CPP_NUM_THREADS");
+    if (thread_env != nullptr && thread_env[0] != '\0')
+    {
+        char *end = nullptr;
+        long value = std::strtol(thread_env, &end, 10);
+        if (end != thread_env && value > 0)
+        {
+            return static_cast<int>(std::min<long>(value, std::numeric_limits<int>::max()));
+        }
+    }
+
+    unsigned int hardware_threads = std::thread::hardware_concurrency();
+    if (hardware_threads == 0)
+    {
+        return 1;
+    }
+
+    return static_cast<int>(std::min<unsigned int>(hardware_threads, 8));
+}
+}
 
 const std::vector<std::string> InferenceEngine::CLASS_NAMES = {
     "title",
@@ -182,11 +210,16 @@ cv::Mat applyGammaCorrection(const cv::Mat &src, float gamma)
 InferenceEngine::InferenceEngine(const std::string &model_path)
     : env(ORT_LOGGING_LEVEL_WARNING, "ONNXRuntime"),
       session_options(),
-      session(env, model_path.c_str(), session_options),
+      session(nullptr),
       input_shape{1, 3, 1024, 1024}
 {
-    session_options.SetIntraOpNumThreads(1);
-    session_options.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_BASIC);
+    int thread_count = getConfiguredThreadCount();
+    session_options.SetIntraOpNumThreads(thread_count);
+    session_options.SetInterOpNumThreads(1);
+    session_options.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
+    cv::setNumThreads(thread_count);
+
+    session = Ort::Session(env, model_path.c_str(), session_options);
 
     // Check if the session was created successfully
     if (!session)
